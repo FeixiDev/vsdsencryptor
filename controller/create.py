@@ -20,10 +20,10 @@ class Create:
 
     def default_password_setting(self):
         hostip = utils.get_host_ip()
-        command = 'linstor encryption ep'
+        command = 'linstor encryption cp'
         password = ''
 
-        log_cmd = f"{command}\n{password}"
+        log_cmd = f"{command}\\n{password}"
 
         try:
             child = pexpect.spawn(command)
@@ -31,12 +31,13 @@ class Create:
 
             child.expect('Passphrase:')
             child.sendline(password)
+            child.expect('Reenter passphrase:')
+            child.sendline(password)
 
             child.expect(pexpect.EOF)
 
             log_data = f"{hostip} - {log_cmd} - {child.before.decode()}"
             utils.Log().logger.info(log_data)
-
         except Exception as e:
             print(f"error:{e}")
 
