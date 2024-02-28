@@ -10,18 +10,20 @@ def main(password):
 class Create:
     def __init__(self, password=None):
         self.password = password
+        self.hostip = utils.get_host_ip()
 
     def main(self):
         if self.password is not None:
             print(f"password is {self.password}")
-            self.password_setting()
         else:
             print(f"password is None")
             self.password = ''
-            self.password_setting()
+
+        self.password_setting()
+        self.profile_setting()
+
 
     def password_setting(self):
-        hostip = utils.get_host_ip()
         command = 'linstor encryption cp'
 
         log_cmd = f"{command}\\n{self.password}\\n{self.password}"
@@ -37,13 +39,18 @@ class Create:
 
             child.expect(pexpect.EOF)
 
-            log_data = f"{hostip} - {log_cmd} - {child.before.decode()}"
+            log_data = f"{self.hostip} - {log_cmd} - {child.before.decode()}"
             utils.Log().logger.info(log_data)
         except Exception as e:
             print(f"error:{e}")
+
     def profile_setting(self):
-        command = "cat /etc/linstor/linstor.toml"
-        result = subprocess.run(command, shell=True, capture_output=True, text=True).stdout
+        if self.password == '':
+            command = "echo '[encrypt]\\npassphrase=\"\"' >> /etc/linstor/linstor.toml"
+            utils.exec_cmd(command)
+        else:
+            command = f"echo '[encrypt]\\npassphrase=\"{self.password}\"' >> /etc/linstor/linstor.toml"
+            utils.exec_cmd(command)
 
 
 
