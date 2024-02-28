@@ -14,25 +14,26 @@ class Create:
     def main(self):
         if self.password is not None:
             print(f"password is {self.password}")
+            self.password_setting()
         else:
             print(f"password is None")
-            self.default_password_setting()
+            self.password = ''
+            self.password_setting()
 
-    def default_password_setting(self):
+    def password_setting(self):
         hostip = utils.get_host_ip()
         command = 'linstor encryption cp'
-        password = ''
 
-        log_cmd = f"{command}\\n{password}"
+        log_cmd = f"{command}\\n{self.password}\\n{self.password}"
 
         try:
             child = pexpect.spawn(command)
             time.sleep(2)
 
             child.expect('Passphrase:')
-            child.sendline(password)
+            child.sendline(self.password)
             child.expect('Reenter passphrase:')
-            child.sendline(password)
+            child.sendline(self.password)
 
             child.expect(pexpect.EOF)
 
@@ -40,6 +41,9 @@ class Create:
             utils.Log().logger.info(log_data)
         except Exception as e:
             print(f"error:{e}")
+    def profile_setting(self):
+        command = "cat /etc/linstor/linstor.toml"
+        result = subprocess.run(command, shell=True, capture_output=True, text=True).stdout
 
 
 
