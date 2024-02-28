@@ -1,5 +1,5 @@
 import time
-
+import pexpect
 import utils.exec_command
 from utils import utils
 import subprocess
@@ -20,31 +20,21 @@ class Create:
 
     def default_password_setting(self):
         hostip = utils.get_host_ip()
-        command = ['linstor', 'encryption', 'ep']
+        command = 'linstor encryption ep'
         password = ''
 
-        log_cmd = f"command\npassowrd"
+        log_cmd = f"{command}\n{password}"
 
         try:
-            # 使用Popen执行命令
-            process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                       text=True)
+            child = pexpect.spawn(command)
             time.sleep(2)
 
-            # 向命令行输入密码，\n代表回车
-            # process.communicate(input=f'{password}\n{password}\n')
-            stdout, stderr = process.communicate(input=f'{password}\n')
+            child.expect('Passphrase:')
+            child.sendline(password)
 
-            # 等待命令执行完成
-            process.wait()
+            child.expect(pexpect.EOF)
 
-            # 检查命令执行的退出状态
-            if process.returncode == 0:
-                log_data = f"{hostip} - {log_cmd} - {stdout}"
-                print("------Command executed successfully------")
-            else:
-                log_data = f"{hostip} - {log_cmd} - {stderr}"
-                print("------Error executing command------")
+            log_data = f"{hostip} - {log_cmd} - {child.before.decode()}"
             utils.Log().logger.info(log_data)
 
         except Exception as e:

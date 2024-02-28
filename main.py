@@ -45,7 +45,6 @@ class argparse_operator:
         if args.password is not None:
             m = create.Create(args.password)
             m.main()
-
         else:
             m = create.Create()
             m.main()
