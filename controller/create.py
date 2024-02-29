@@ -13,8 +13,7 @@ class Create:
         self.hostip = utils.get_host_ip()
 
     def main(self):
-        if self.password is not None:
-        else:
+        if self.password is None:
             self.password = ''
 
         self.password_setting()
