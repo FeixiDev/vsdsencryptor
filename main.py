@@ -11,7 +11,7 @@ from controller import create
 
 class argparse_operator:
     def __init__(self):
-        self.parser = argparse.ArgumentParser(prog='argparse')
+        self.parser = argparse.ArgumentParser(prog='vsdsencryptor')
         self.setup_parse()
 
     def setup_parse(self):
@@ -36,7 +36,7 @@ class argparse_operator:
 
     def main_usage(self,args):
         if args.version:
-            print(f'Version: ？')
+            print(f'Version: v1.0.0')
         else:
             self.perform_all_tests(args)
 

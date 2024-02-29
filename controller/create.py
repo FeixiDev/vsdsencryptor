@@ -14,9 +14,9 @@ class Create:
 
     def main(self):
         if self.password is not None:
-            print(f"password is {self.password}")
+            print(f"密码配置为: {self.password}")
         else:
-            print(f"password is None")
+            print(f"密码配置为空")
             self.password = ''
 
         self.password_setting()
@@ -41,18 +41,23 @@ class Create:
 
             log_data = f"{self.hostip} - {log_cmd} - {child.before.decode()}"
             utils.Log().logger.info(log_data)
+            print(f"linstor集群密码配置完成")
         except Exception as e:
-            print(f"error:{e}")
+            print(f"linstor集群密码配置错误: {e}")
 
     def profile_setting(self):
-        if self.password == '':
-            command = "echo '[encrypt]\\npassphrase=\"\"' >> /etc/linstor/linstor.toml"
-            utils.exec_cmd(command)
-        else:
-            command = f"echo '[encrypt]\\npassphrase=\"{self.password}\"' >> /etc/linstor/linstor.toml"
-            utils.exec_cmd(command)
+        try:
+            if self.password == '':
+                command = "echo '[encrypt]\\npassphrase=\"\"' >> /etc/linstor/linstor.toml"
+                utils.exec_cmd(command)
+            else:
+                command = f"echo '[encrypt]\\npassphrase=\"{self.password}\"' >> /etc/linstor/linstor.toml"
+                utils.exec_cmd(command)
+            print(f"linstor.toml文件配置完成")
+        except Exception as e:
+            print(f"linstor.toml文件配置错误: {e}")
 
 
 
 if __name__ == "__main__":
-    print("")
+    pass
