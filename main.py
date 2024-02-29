@@ -32,7 +32,7 @@ class argparse_operator:
 
 
     def perform_all_tests(self,args):
-        print("this is 'python3 main.py'")
+        self.parser.print_help()
 
     def main_usage(self,args):
         if args.version:

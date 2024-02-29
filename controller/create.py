@@ -14,9 +14,7 @@ class Create:
 
     def main(self):
         if self.password is not None:
-            print(f"密码配置为: {self.password}")
         else:
-            print(f"密码配置为空")
             self.password = ''
 
         self.password_setting()
@@ -48,10 +46,10 @@ class Create:
     def profile_setting(self):
         try:
             if self.password == '':
-                command = "echo '[encrypt]\\npassphrase=\"\"' >> /etc/linstor/linstor.toml"
+                command = "echo '\\n[encrypt]\\npassphrase=\"\"' >> /etc/linstor/linstor.toml"
                 utils.exec_cmd(command)
             else:
-                command = f"echo '[encrypt]\\npassphrase=\"{self.password}\"' >> /etc/linstor/linstor.toml"
+                command = f"echo '\\n[encrypt]\\npassphrase=\"{self.password}\"' >> /etc/linstor/linstor.toml"
                 utils.exec_cmd(command)
             print(f"linstor.toml文件配置完成")
         except Exception as e:
