@@ -76,7 +76,7 @@ class Log(object):
     @staticmethod
     def set_handler(logger):
         now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-        file_name = f'vsdsadm_{now_time}.log'
+        file_name = f'vsdsencryptor_{now_time}.log'
         fh = logging.FileHandler(file_name, mode='a', encoding='utf-8')
         fh.setLevel(logging.DEBUG)
         formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", datefmt='%Y-%m-%d %H:%M:%S')
