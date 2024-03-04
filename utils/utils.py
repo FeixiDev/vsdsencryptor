@@ -39,28 +39,6 @@ def exec_cmd(cmd, conn=None):
         sys.exit()
     return result['rt']
 
-
-class RWData(object):
-
-    def dd_write(self,device_name, ssh_conn=None):
-        cmd = f'dd if=/dev/urandom of={device_name} oflag=direct status=progress'
-        result = exec_cmd(cmd,ssh_conn)
-        return result
-
-
-    def dd_read(self,device_name,read_test_path, ssh_conn=None):
-        cmd = f"dd if={device_name} of={read_test_path} oflag=direct status=progress"
-        result = exec_cmd(cmd,ssh_conn)
-        return result
-
-
-    def kill_dd(self,dd_pid, ssh_conn=None):
-        cmd = f'kill {dd_pid}'
-        result = exec_cmd(cmd,ssh_conn)
-        return result
-
-
-
 class Log(object):
     def __init__(self):
         pass
